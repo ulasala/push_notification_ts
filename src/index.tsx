@@ -5,6 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 //import { APIProvider } from './context/APIContext';
 import { ComponentRenderProvider } from './context/componentRenderContext';
+import { RowColorChangeProvider } from './context/rowColorChangeContext';
+import { RowProvider } from './context/RowContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,7 +14,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ComponentRenderProvider>
-      <App />
+      <RowColorChangeProvider>
+        <RowProvider>
+          <App />
+        </RowProvider>
+      </RowColorChangeProvider>
     </ComponentRenderProvider>
   </React.StrictMode>
 );

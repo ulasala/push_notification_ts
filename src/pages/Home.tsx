@@ -1,5 +1,5 @@
 import React from 'react';
-import GridLayoutChat from '../components/GridLayoutChat';
+import GridLayoutChat from '../components/GridLayout';
 
 type Props = {};
 

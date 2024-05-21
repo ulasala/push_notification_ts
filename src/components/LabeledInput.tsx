@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, KeyboardEvent } from 'react';
+import React, { ChangeEvent, KeyboardEvent } from 'react';
 
 interface LabeledInputProps {
   label: string;

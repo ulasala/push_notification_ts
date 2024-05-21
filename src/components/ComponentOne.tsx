@@ -10,17 +10,17 @@ const ComponentOne: React.FC<ComponentOneProps> = ({ id }) => {
   const { updateRow } = useRowContext();
 
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
-    updateRow(id, { isSubmitted: true });
     toast.success('Data Submitted', {
       duration: 4000,
       position: 'top-right',
     });
+    updateRow(id, { isSubmitted: true });
     setTimeout(() => {
-      updateRow(id, { isSubmitted: false, isNotified: true });
       toast.success(`${id + 1} Data Notification`, {
         duration: 4000,
         position: 'top-right',
       });
+      updateRow(id, { isSubmitted: false, isNotified: true });
     }, 5000);
   };
 

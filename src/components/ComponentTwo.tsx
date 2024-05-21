@@ -17,18 +17,18 @@ const ComponentTwo: React.FC<ComponentTwoProps> = ({ id }) => {
 
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (value.length > 0) {
-      updateRow(id, { isSubmitted: true });
-      setValue('');
       toast.success('Data Submitted', {
         duration: 4000,
         position: 'top-right',
       });
+      updateRow(id, { isSubmitted: true });
+      setValue('');
       setTimeout(() => {
-        updateRow(id, { isSubmitted: false, isNotified: true });
         toast.success(`${id + 1} Data Notification`, {
           duration: 4000,
           position: 'top-right',
         });
+        updateRow(id, { isSubmitted: false, isNotified: true });
       }, 5000);
     } else {
       toast.error('Enter value in the fields', {

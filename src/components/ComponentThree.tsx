@@ -1,26 +1,46 @@
-import React from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import LabeledInput from './LabeledInput';
 import { useRowContext } from '../context/RowContext';
+import toast, { Toaster } from 'react-hot-toast';
 
-interface ComponentThreeProps {}
+interface ComponentThreeProps {
+  id: number;
+}
 
-const ComponentThree: React.FC<ComponentThreeProps> = () => {
+const ComponentThree: React.FC<ComponentThreeProps> = ({ id }) => {
   const { updateRow } = useRowContext();
+  const [valueOne, setValueOne] = useState<string>('');
+  const [valueTwo, setValueTwo] = useState<string>('');
 
-  // const [newRow, setNewRow] = useState<Row>({
-  //   rowId: 2,
-  //   isSubmitted: true,
-  //   isNotified: false,
-  // });
+  const handleChangeOne = (event: ChangeEvent<HTMLInputElement>) => {
+    setValueOne(event.target.value);
+  };
+  const handleChangeTwo = (event: ChangeEvent<HTMLInputElement>) => {
+    setValueTwo(event.target.value);
+  };
 
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
-    // setNewRow({
-    //   rowId: 2,
-    //   isSubmitted: true,
-    //   isNotified: false,
-    // });
-
-    updateRow(2, { isSubmitted: true });
+    if (valueOne.length > 0 && valueTwo.length > 0) {
+      updateRow(id, { isSubmitted: true });
+      setValueOne('');
+      setValueTwo('');
+      toast.success('Data Submitted', {
+        duration: 4000,
+        position: 'top-right',
+      });
+      setTimeout(() => {
+        updateRow(id, { isSubmitted: false, isNotified: true });
+        toast.success(`${id + 1} Data Notification`, {
+          duration: 4000,
+          position: 'top-right',
+        });
+      }, 5000);
+    } else {
+      toast.error('Enter value in the fields', {
+        duration: 4000,
+        position: 'top-right',
+      });
+    }
   };
 
   return (
@@ -33,6 +53,8 @@ const ComponentThree: React.FC<ComponentThreeProps> = () => {
             type="text"
             placeholder="Enter your username"
             className="w-[50%]"
+            onChange={handleChangeOne}
+            value={valueOne}
           />
         </div>
         <div className="mb-4">
@@ -42,6 +64,8 @@ const ComponentThree: React.FC<ComponentThreeProps> = () => {
             type="text"
             placeholder="Enter your username"
             className="w-[50%]"
+            onChange={handleChangeTwo}
+            value={valueTwo}
           />
         </div>
       </div>
@@ -53,6 +77,7 @@ const ComponentThree: React.FC<ComponentThreeProps> = () => {
         >
           Submit
         </button>
+        <Toaster />
       </div>
     </div>
   );

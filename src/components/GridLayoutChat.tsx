@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { ChangeEvent, useContext, useState, KeyboardEvent } from 'react';
 import LabeledInput from './LabeledInput';
 import ComponentOne from './ComponentOne';
 import ComponentThree from './ComponentThree';
@@ -6,33 +6,35 @@ import ComponentTwo from './ComponentTwo';
 import { ComponentRenderContext } from '../context/componentRenderContext';
 
 import { useRowContext } from '../context/RowContext';
-
-//import InputField from './InputField';
+import toast, { Toaster } from 'react-hot-toast';
 
 const GridLayoutChat: React.FC = () => {
   const { state } = useRowContext();
 
-  console.log('state', state);
-
+  const [value, setValue] = useState<string>('');
   const [selectedId, setSelectedId] = useState<number>(0);
 
   const componentrenderContext = useContext(ComponentRenderContext);
 
   const handleClick = (index: number) => {
     setSelectedId(index);
-    //alert(`Row ${index + 1} clicked!`);
-    // Update the color of the clicked row
-    // setRowColors((prevColors) =>
-    //    prevColors.map((color, i) => (i === index ? 'blue' : color))
-    //  );
   };
 
-  const handleEnter = (inputValue: string) => {
-    if (inputValue === 'empty') {
-      console.log('Input should not be empty');
-    } else {
-      console.log('Enter pressed, input value:', inputValue);
-      componentrenderContext?.setIsRendered(true);
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      if (value.length > 0) {
+        componentrenderContext?.setIsRendered(true);
+        setValue('');
+      } else {
+        toast.error('Enter value in the fields', {
+          duration: 4000,
+          position: 'top-right',
+        });
+      }
     }
   };
 
@@ -47,8 +49,11 @@ const GridLayoutChat: React.FC = () => {
             type="text"
             placeholder="Enter your username"
             className="w-[30%]"
-            onEnter={handleEnter}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            value={value}
           />
+          <Toaster />
         </div>
 
         {/* Vertical grids */}
@@ -75,9 +80,9 @@ const GridLayoutChat: React.FC = () => {
 
             {/* Right side vertical grid */}
             <div className="col-span-8 border border-gray-300 rounded ">
-              {selectedId === 0 ? <ComponentOne /> : null}
-              {selectedId === 1 ? <ComponentTwo /> : null}
-              {selectedId === 2 ? <ComponentThree /> : null}
+              {selectedId === 0 ? <ComponentOne id={selectedId} /> : null}
+              {selectedId === 1 ? <ComponentTwo id={selectedId} /> : null}
+              {selectedId === 2 ? <ComponentThree id={selectedId} /> : null}
             </div>
           </div>
         ) : null}

@@ -1,27 +1,41 @@
-import React from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import LabeledInput from './LabeledInput';
-
+import toast, { Toaster } from 'react-hot-toast';
 import { useRowContext } from '../context/RowContext';
 
-interface ComponentTwoProps {}
+interface ComponentTwoProps {
+  id: number;
+}
 
-const ComponentTwo: React.FC<ComponentTwoProps> = () => {
+const ComponentTwo: React.FC<ComponentTwoProps> = ({ id }) => {
   const { updateRow } = useRowContext();
+  const [value, setValue] = useState<string>('');
 
-  // const [newRow, setNewRow] = useState<Row>({
-  //   rowId: 1,
-  //   isSubmitted: true,
-  //   isNotified: false,
-  // });
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+  };
 
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
-    // setNewRow({
-    //   rowId: 1,
-    //   isSubmitted: true,
-    //   isNotified: false,
-    // });
-
-    updateRow(1, { isSubmitted: true });
+    if (value.length > 0) {
+      updateRow(id, { isSubmitted: true });
+      setValue('');
+      toast.success('Data Submitted', {
+        duration: 4000,
+        position: 'top-right',
+      });
+      setTimeout(() => {
+        updateRow(id, { isSubmitted: false, isNotified: true });
+        toast.success(`${id + 1} Data Notification`, {
+          duration: 4000,
+          position: 'top-right',
+        });
+      }, 5000);
+    } else {
+      toast.error('Enter value in the fields', {
+        duration: 4000,
+        position: 'top-right',
+      });
+    }
   };
 
   return (
@@ -34,6 +48,8 @@ const ComponentTwo: React.FC<ComponentTwoProps> = () => {
             type="text"
             placeholder="Enter your username"
             className="w-[50%]"
+            onChange={handleChange}
+            value={value}
           />
         </div>
       </div>
@@ -46,6 +62,7 @@ const ComponentTwo: React.FC<ComponentTwoProps> = () => {
           Submit
         </button>
       </div>
+      <Toaster />
     </div>
   );
 };

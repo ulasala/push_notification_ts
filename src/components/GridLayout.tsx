@@ -19,9 +19,7 @@ const GridItem: React.FC<GridItemProps> = ({ onClick, children }) => {
 };
 
 const GridLayout: React.FC = () => {
-  const handleLeftItemClick = (index: number) => {
-    console.log(`Left item clicked: ${index}`); // Replace with your logic
-  };
+  const handleLeftItemClick = (index: number) => {};
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-100">

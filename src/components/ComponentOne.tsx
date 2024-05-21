@@ -1,25 +1,27 @@
 import React from 'react';
 import { useRowContext } from '../context/RowContext';
+import toast, { Toaster } from 'react-hot-toast';
 
-interface ComponentOneProps {}
+interface ComponentOneProps {
+  id: number;
+}
 
-const ComponentOne: React.FC<ComponentOneProps> = () => {
+const ComponentOne: React.FC<ComponentOneProps> = ({ id }) => {
   const { updateRow } = useRowContext();
 
-  // const [newRow, setNewRow] = useState<Row>({
-  //   rowId: 0,
-  //   isSubmitted: true,
-  //   isNotified: false,
-  // });
-
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
-    // setNewRow({
-    //   rowId: 0,
-    //   isSubmitted: true,
-    //   isNotified: false,
-    // });
-
-    updateRow(0, { isSubmitted: true });
+    updateRow(id, { isSubmitted: true });
+    toast.success('Data Submitted', {
+      duration: 4000,
+      position: 'top-right',
+    });
+    setTimeout(() => {
+      updateRow(id, { isSubmitted: false, isNotified: true });
+      toast.success(`${id + 1} Data Notification`, {
+        duration: 4000,
+        position: 'top-right',
+      });
+    }, 5000);
   };
 
   return (
@@ -36,6 +38,7 @@ const ComponentOne: React.FC<ComponentOneProps> = () => {
           Submit
         </button>
       </div>
+      <Toaster />
     </div>
   );
 };

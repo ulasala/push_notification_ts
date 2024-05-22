@@ -20,29 +20,22 @@ const GridLayout: React.FC = () => {
 
   const [value, setValue] = useState<string>('');
   const [selectedId, setSelectedId] = useState<number>(0);
-  const [messages, setMessages] = useState<string[]>([]);
-  const [user, setUser] = useState<string>('Hi');
-  const [message, setMessage] = useState<string>('Ashok');
 
-  useEffect(() => {
-    signalRService.connection.on(
-      'ReceiveMessage',
-      (user: string, message: string) => {
-        setMessages((prevMessages) => [...prevMessages, `${user}: ${message}`]);
-      }
-    );
+  // useEffect(() => {
+  //   // signalRService.connection.on(
+  //   //   'ReceiveNotification',
+  //   //   (user: string, message: string) => {
+  //   //     setMessages((prevMessages) => [...prevMessages, `${user}: ${message}`]);
+  //   //   }
+  //   // );
 
-    return () => {
-      signalRService.connection.off('ReceiveMessage');
-    };
-  }, []);
+  //   return () => {
+  //     signalRService.connection.off('ReceiveNotification');
+  //   };
+  // }, []);
 
   const sendMessage = () => {
-    if (user && message) {
-      console.log('user && message', user, message);
-      signalRService.sendMessage(user, message);
-      //setMessage('');
-    }
+    signalRService.sendMessage('Hi Ashok', 'Good Morning');
   };
 
   const componentrenderContext = useContext(ComponentRenderContext);

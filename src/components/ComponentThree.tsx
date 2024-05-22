@@ -1,7 +1,8 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import LabeledInput from './LabeledInput';
 import { useRowContext } from '../context/RowContext';
 import toast, { Toaster } from 'react-hot-toast';
+import signalRService from '../signalR/signalRService';
 
 interface ComponentThreeProps {
   id: number;
@@ -12,6 +13,20 @@ const ComponentThree: React.FC<ComponentThreeProps> = ({ id }) => {
   const [valueOne, setValueOne] = useState<string>('');
   const [valueTwo, setValueTwo] = useState<string>('');
 
+  useEffect(() => {
+    signalRService.connection.on(
+      'ReceiveNotification',
+      (user: string, message: string) => {
+        console.log('Component Three Effect ===>', user, message);
+        checkPushNotification(id, user, message);
+      }
+    );
+
+    return () => {
+      signalRService.connection.off('ReceiveNotification');
+    };
+  }, []);
+
   const handleChangeOne = (event: ChangeEvent<HTMLInputElement>) => {
     setValueOne(event.target.value);
   };
@@ -21,6 +36,7 @@ const ComponentThree: React.FC<ComponentThreeProps> = ({ id }) => {
 
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (valueOne.length > 0 && valueTwo.length > 0) {
+      signalRService.sendMessage('Three', 'call');
       toast.success('Data Submitted', {
         duration: 4000,
         position: 'top-right',
@@ -28,13 +44,8 @@ const ComponentThree: React.FC<ComponentThreeProps> = ({ id }) => {
       updateRow(id, { isSubmitted: true });
       setValueOne('');
       setValueTwo('');
-      setTimeout(() => {
-        toast.success(`${id + 1} Data Notification`, {
-          duration: 4000,
-          position: 'top-right',
-        });
-        updateRow(id, { isSubmitted: false, isNotified: true });
-      }, 5000);
+      // checkPushNotification(id);
+      // setTimeout(() => {}, 5000);
     } else {
       toast.error('Enter value in the fields', {
         duration: 4000,
@@ -43,6 +54,14 @@ const ComponentThree: React.FC<ComponentThreeProps> = ({ id }) => {
     }
   };
 
+  const checkPushNotification = (id: number, user: string, message: string) => {
+    toast.success(`${id + 1} ${user} ${message} Notification`, {
+      duration: 4000,
+      position: 'top-right',
+    });
+
+    updateRow(id, { isSubmitted: false, isNotified: true });
+  };
   return (
     <div className="relative h-full justify-content-start p-8">
       <div className="  p-8  col-span-4 ">

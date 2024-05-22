@@ -45,8 +45,6 @@ const ComponentThree: React.FC<ComponentThreeProps> = ({ id }) => {
       updateRow(id, { isSubmitted: true });
       setValueOne('');
       setValueTwo('');
-      // checkPushNotification(id);
-      // setTimeout(() => {}, 5000);
     } else {
       toast.error('Enter value in the fields', {
         duration: 4000,

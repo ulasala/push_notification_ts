@@ -40,8 +40,6 @@ const ComponentTwo: React.FC<ComponentTwoProps> = ({ id }) => {
       });
       updateRow(id, { isSubmitted: true });
       setValue('');
-      //checkPushNotification(id);
-      //setTimeout(() => {}, 5000);
     } else {
       toast.error('Enter value in the fields', {
         duration: 4000,

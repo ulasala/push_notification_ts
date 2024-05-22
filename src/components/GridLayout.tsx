@@ -1,10 +1,4 @@
-import React, {
-  ChangeEvent,
-  useContext,
-  useState,
-  KeyboardEvent,
-  useEffect,
-} from 'react';
+import React, { ChangeEvent, useContext, useState, KeyboardEvent } from 'react';
 import LabeledInput from './LabeledInput';
 import ComponentOne from './ComponentOne';
 import ComponentThree from './ComponentThree';

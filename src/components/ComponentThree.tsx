@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import LabeledInput from './LabeledInput';
 import { useRowContext } from '../context/RowContext';
 import toast, { Toaster } from 'react-hot-toast';
@@ -25,6 +25,7 @@ const ComponentThree: React.FC<ComponentThreeProps> = ({ id }) => {
     return () => {
       signalRService.connection.off('ReceiveNotification');
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleChangeOne = (event: ChangeEvent<HTMLInputElement>) => {

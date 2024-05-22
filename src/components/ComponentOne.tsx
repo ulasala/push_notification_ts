@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useRowContext } from '../context/RowContext';
 import toast, { Toaster } from 'react-hot-toast';
 import signalRService from '../signalR/signalRService';
@@ -22,6 +22,7 @@ const ComponentOne: React.FC<ComponentOneProps> = ({ id }) => {
     return () => {
       signalRService.connection.off('ReceiveNotification');
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
